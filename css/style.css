@@ -16,6 +16,10 @@ body {
     body div.page-wrapper div.grid {
       width: 10%;
       height: 5%;
-      border: 1px solid orange; }
+      border: 1px solid orange;
+      font-size: 10px; }
+
+.filled {
+  background-color: red; }
 
 /*# sourceMappingURL=style.css.map */

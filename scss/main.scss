@@ -15,11 +15,16 @@ body {
     display: flex;
     flex-wrap: wrap;
     div {
-      &.grid{
+      &.grid {
         width:10%;
         height: 5%;
         border: 1px solid orange;
+        font-size: 10px;
       }
     }
   }
+}
+
+.filled {
+  background-color: red;
 }
