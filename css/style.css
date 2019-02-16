@@ -1,0 +1,21 @@
+* {
+  box-sizing: border-box; }
+
+body {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+  body div.page-wrapper {
+    border: 1px solid black;
+    width: 30%;
+    height: 90%;
+    display: flex;
+    flex-wrap: wrap; }
+    body div.page-wrapper div.grid {
+      width: 10%;
+      height: 5%;
+      border: 1px solid orange; }
+
+/*# sourceMappingURL=style.css.map */
