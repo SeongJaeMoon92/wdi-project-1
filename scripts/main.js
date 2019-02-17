@@ -60,37 +60,64 @@ window.addEventListener('DOMContentLoaded', () => {
   // }
 
   const shapeL = [4, 14, 15, 16]
+  const shapeLAlternate = [6, 14, 15, 16]
   const shapeZ = [4, 5, 15, 16]
+  const shapeZAlternate = [5, 6, 14, 15]
   const shapeO = [4, 5, 14, 15]
   const shapeT = [5, 14, 15, 16]
   const shapeI = [13, 14, 15, 16]
 
-  const shape = [shapeL, shapeZ, shapeO, shapeT, shapeI]
+  const shape = [shapeL, shapeLAlternate, shapeZ, shapeZAlternate, shapeO, shapeT, shapeI]
 
-  // function clear(){
-  //
+
+
+  // const blockGenerator = {
+  //   randomBlockGenerator: function() {
+  //     const randomShapeIndex = Math.floor(Math.random()*shape.length)
+  //     console.log(randomShapeIndex)
+  //     const randomShape = shape[randomShapeIndex]
+  //     console.log(randomShape)
+  //     return randomShape
+  //   }
   // }
+  //
+  // const value = blockGenerator.randomBlockGenerator()
+  // console.log(value[0])
+
+  function randomBlockGenerator() {
+    const randomShapeIndex = Math.floor(Math.random()*shape.length)
+    console.log(randomShapeIndex)
+    const randomShape = shape[randomShapeIndex]
+    console.log(randomShape)
+    return randomShape
+  }
+
+  const randomBlock = randomBlockGenerator()
+
+  function clear(){
+    gridItems.forEach(divIndex => divIndex.classList.remove('filled'))
+  }
 
   function fill(){
-    // clear()
-    let newShapeL
-    let empty = []
+    // console.log(randomBlock)
+    clear()
+    let newShape
+    const empty = []
     let newValue = 0
-    for (let k = 0; k < shapeL.length; k++){
+    for (let k = 0; k < randomBlock.length; k++){
       if (arrowKey === 'left'){
-        shapeL[k]--
-      } else if (arrowKey ==='right') {
-        shapeL[k]++
+        randomBlock[k]--
+      } else if (arrowKey === 'right') {
+        randomBlock[k]++
       } else if(arrowKey === 'down') {
-        shapeL[k] += 10
+        randomBlock[k]+= 10
       }
-      newValue = shapeL[k]
-      console.log(newValue)
-      newShapeL = gridItems[newValue]
-      empty.push(newShapeL)
+      newValue = randomBlock[k]
+      // console.log(newValue)
+      newShape = gridItems[newValue]
+      empty.push(newShape)
     }
-    // console.log(newShapeL)
-    console.log(empty)
+    // console.log(empty)
     empty.forEach(shapeIndex => shapeIndex.classList.add('filled'))
   }
 
@@ -99,13 +126,14 @@ window.addEventListener('DOMContentLoaded', () => {
   function direction(e){
     if (e.keyCode === 37){
       arrowKey = 'left'
-    }
-    if (e.keyCode === 39){
+    } else if (e.keyCode === 39){
       arrowKey = 'right'
+    } else if (e.keyCode === 40){
+      arrowKey = 'down'
+    } else {
+      return false
     }
-    if (e.keyCode === 40){
-      arrowKey  = 'down'
-    }
+    console.log(e.keyCode)
     fill()
   }
 
