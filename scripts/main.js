@@ -69,8 +69,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const shape = [shapeL, shapeLAlternate, shapeZ, shapeZAlternate, shapeO, shapeT, shapeI]
 
-
-
   // const blockGenerator = {
   //   randomBlockGenerator: function() {
   //     const randomShapeIndex = Math.floor(Math.random()*shape.length)
@@ -88,11 +86,20 @@ window.addEventListener('DOMContentLoaded', () => {
     const randomShapeIndex = Math.floor(Math.random()*shape.length)
     console.log(randomShapeIndex)
     const randomShape = shape[randomShapeIndex]
-    console.log(randomShape)
+    // console.log(randomShape)
     return randomShape
   }
 
   const randomBlock = randomBlockGenerator()
+
+  function falling() {
+    for (let i = 0; i < randomBlock.length; i++){
+      randomBlock[i] += 10
+    }
+    console.log(randomBlock)
+  }
+
+  setInterval(falling, 1000)
 
   function clear(){
     gridItems.forEach(divIndex => divIndex.classList.remove('filled'))
@@ -137,8 +144,11 @@ window.addEventListener('DOMContentLoaded', () => {
     fill()
   }
 
-
   document.addEventListener('keydown', direction)
+
+  // function game(){
+  //
+  // }
 
   // let i = 14
   // let pick
