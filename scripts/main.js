@@ -93,13 +93,23 @@ window.addEventListener('DOMContentLoaded', () => {
   const randomBlock = randomBlockGenerator()
 
   function falling() {
+    clear()
+    let newShape
+    const empty = []
+    let newValue = 0
     for (let i = 0; i < randomBlock.length; i++){
       randomBlock[i] += 10
+      newValue = randomBlock[i]
+      // console.log(newValue)
+      newShape = gridItems[newValue]
+      empty.push(newShape)
     }
     console.log(randomBlock)
+    // console.log(empty)
+    empty.forEach(shapeIndex => shapeIndex.classList.add('filled'))
   }
 
-  setInterval(falling, 1000)
+  setInterval(falling, 1500)
 
   function clear(){
     gridItems.forEach(divIndex => divIndex.classList.remove('filled'))
