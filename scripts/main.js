@@ -59,36 +59,84 @@ window.addEventListener('DOMContentLoaded', () => {
   //   }
   // }
 
+  const shapeL = [4, 14, 15, 16]
+  const shapeZ = [4, 5, 15, 16]
+  const shapeO = [4, 5, 14, 15]
+  const shapeT = [5, 14, 15, 16]
+  const shapeI = [13, 14, 15, 16]
 
-  let i = 14
-  let pick
+  const shape = [shapeL, shapeZ, shapeO, shapeT, shapeI]
 
-  document.addEventListener('keydown', (e)=>{
+  // function clear(){
+  //
+  // }
+
+  function fill(){
+    // clear()
+    let newShapeL
+    let empty = []
+    let newValue = 0
+    for (let k = 0; k < shapeL.length; k++){
+      if (arrowKey === 'left'){
+        shapeL[k]--
+      } else if (arrowKey ==='right') {
+        shapeL[k]++
+      } else if(arrowKey === 'down') {
+        shapeL[k] += 10
+      }
+      newValue = shapeL[k]
+      console.log(newValue)
+      newShapeL = gridItems[newValue]
+      empty.push(newShapeL)
+    }
+    // console.log(newShapeL)
+    console.log(empty)
+    empty.forEach(shapeIndex => shapeIndex.classList.add('filled'))
+  }
+
+  let arrowKey = null
+
+  function direction(e){
     if (e.keyCode === 37){
-      i--
-      console.log(e.keyCode)
+      arrowKey = 'left'
     }
     if (e.keyCode === 39){
-      i++
-      console.log(e.keyCode)
+      arrowKey = 'right'
     }
     if (e.keyCode === 40){
-      i +=10
-      console.log(e.keyCode)
+      arrowKey  = 'down'
     }
-    console.log(i)
-    pick = gridItems.item(i)
-    pick.style.backgroundColor = 'red'
-  })
+    fill()
+  }
 
 
+  document.addEventListener('keydown', direction)
 
+  // let i = 14
+  // let pick
 
+  // document.addEventListener('keydown', (e)=>{
+  //   if (e.keyCode === 37){
+  //     i--
+  //     console.log(e.keyCode)
+  //   }
+  //   if (e.keyCode === 39){
+  //     i++
+  //     console.log(e.keyCode)
+  //   }
+  //   if (e.keyCode === 40){
+  //     i +=10
+  //     console.log(e.keyCode)
+  //   }
+  //   console.log(i)
+  //   pick = gridItems.item(i)
+  //   pick.style.backgroundColor = 'red'
+  // })
 
 
   // let pick = document.querySelector('[data-array="' + i + '"]')
 
   // const centerPiece = new Shape(15, 'red')
 
-  console.log([gridItems[4], gridItems[14],gridItems[15],gridItems[16]])
+  // console.log([gridItems[4], gridItems[14],gridItems[15],gridItems[16]])
 })
