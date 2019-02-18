@@ -20,6 +20,7 @@ body {
       font-size: 10px; }
 
 .filled {
-  background-color: red; }
+  background-color: red;
+  border: 2px solid black; }
 
 /*# sourceMappingURL=style.css.map */
