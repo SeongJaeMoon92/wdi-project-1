@@ -1,18 +1,12 @@
 window.addEventListener('DOMContentLoaded', () => {
   const pageWrapper = document.querySelector('.page-wrapper')
   const gridItems = pageWrapper.childNodes
-  console.log(gridItems)
+  // console.log(gridItems)
   function gameSetup(){
     boardDivs(200)
-    boardArray()
+    // boardArray()
   }
-  function boardArray(){
-    const x = []
-    for(let i = 0; i < 200; i++) {
-      x.push(0)
-    }
-    console.log(x)
-  }
+
   function boardDivs(num) {
     for (let i = 0; i < num; i++){
       const newDivs = document.createElement('div')
@@ -30,21 +24,24 @@ window.addEventListener('DOMContentLoaded', () => {
       this.newIndex = null
       this.emptyArray = []
       this.newShape = null
+      // this.currentPosition()
+      // this.init()
     }
+
     falling(){
       setInterval(()=>{
-        if (this.index[0] < 180 || this.index[1] < 180 || this.index[2] < 190 || this.index[3] < 190) {
+        if (!this.index.some(number => number > 190)) {
           clear()
           this.emptyArray = []
           for (let i = 0; i < this.index.length; i++){
             this.index[i] += 10
             this.newIndex = this.index[i]
+            // console.log('New Index: '+this.newIndex)
             this.newShape = gridItems[this.newIndex]
             this.emptyArray.push(this.newShape)
           }
           this.fill()
-          console.log(this.newIndex)
-          return this.newIndex
+          console.log('New Index: ' + this.newIndex)
         }
       },1000)
     }
@@ -72,8 +69,9 @@ window.addEventListener('DOMContentLoaded', () => {
         this.fill()
       }
     }
-
-
+    currentPosition(){
+      this.newIndex
+    }
   }
 
   class ShapeL extends Shape {
@@ -149,6 +147,8 @@ window.addEventListener('DOMContentLoaded', () => {
   function clear(){
     gridItems.forEach(divIndex => divIndex.classList.remove('filled'))
   }
+
+  // console.log(arrayBlocks[arrayBlocks.length - 1].newIndex)
 
   document.addEventListener('keydown', (e) => {
     arrayBlocks[arrayBlocks.length-1].movement(e)
