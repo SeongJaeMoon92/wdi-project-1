@@ -67,16 +67,16 @@ window.addEventListener('DOMContentLoaded', () => {
           if(e.keyCode === 40){
             this.newBlock[k]+= 10
           } else if (e.keyCode === 37 ){
-            if (this.newBlock[k] % 10 !== 0){
+            if (this.newBlock[k] % 10 === 0){
+              return this.newBlock
+            } else if (this.newBlock[k] % 10 !== 0){
               this.newBlock[k]--
-            } else {
-              return false
             }
           } else if (e.keyCode === 39) {
-            if (this.newBlock[k] % 10 !== 9){
+            if (this.newBlock[k] % 10 === 9){
+              return this.newBlock 
+            } else if (this.newBlock[k] % 10 !== 9) {
               this.newBlock[k]++
-            } else {
-              return
             }
           }
           this.newIndex = this.newBlock[k]
@@ -125,7 +125,13 @@ window.addEventListener('DOMContentLoaded', () => {
         }
       }
     }
-    
+    // checkingRows(){
+    //   for (let i = 0; i < 20; i++){
+    //     for (let j = 0; j < 10; j++){
+    //       if()
+    //     }
+    //   }
+    // }
   }
   const block = new Shape()
   function clear(){
