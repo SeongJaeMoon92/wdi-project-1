@@ -24,24 +24,28 @@ window.addEventListener('DOMContentLoaded', () => {
       this.newIndex = null
       this.emptyArray = []
       this.newShape = null
-      // this.currentPosition()
-      // this.init()
+      this.newBlock = null
+      this.arrayBlocks = []
+      this.randomIndex = null
+      this.occupiedBlockArray = []
+      this.currentShape = null
+      this.generateBlock()
+      this.windowListener()
     }
-
     falling(){
       setInterval(()=>{
-        if (!this.index.some(number => number > 190)) {
+        if (!this.newBlock.some(number => number > 190)) {
           clear()
           this.emptyArray = []
-          for (let i = 0; i < this.index.length; i++){
-            this.index[i] += 10
-            this.newIndex = this.index[i]
-            // console.log('New Index: '+this.newIndex)
+          for (let i = 0; i < this.newBlock.length; i++){
+            this.newBlock[i] += 10
+            this.newIndex = this.newBlock[i]
             this.newShape = gridItems[this.newIndex]
             this.emptyArray.push(this.newShape)
           }
           this.fill()
           console.log('New Index: ' + this.newIndex)
+          this.occupied()
         }
       },1000)
     }
@@ -49,109 +53,71 @@ window.addEventListener('DOMContentLoaded', () => {
       this.emptyArray.forEach(shapeIndex => shapeIndex.classList.add('filled'))
     }
     movement(e){
-      if (this.index[0] < 180 || this.index[1] < 180 || this.index[2] < 190 || this.index[3] < 190) {
+      if (!this.newBlock.some(number => number > 190)) {
         this.emptyArray = []
-        for (let k = 0; k < this.index.length; k++){
+        for (let k = 0; k < this.newBlock.length; k++){
           if (e.keyCode === 37){
-            this.index[k]--
+            this.newBlock[k]--
           } else if (e.keyCode === 39) {
-            this.index[k]++
+            this.newBlock[k]++
           } else if(e.keyCode === 40) {
-            this.index[k]+= 10
+            this.newBlock[k]+= 10
           } else {
             return false
           }
-          this.newIndex = this.index[k]
+          this.newIndex = this.newBlock[k]
           this.newShape = gridItems[this.newIndex]
           this.emptyArray.push(this.newShape)
         }
         clear()
         this.fill()
+        this.occupied()
       }
     }
-    currentPosition(){
-      this.newIndex
+    newRandomShape(){
+      this.indexArray = [[4, 14, 15, 16], [6, 14, 15, 16], [4, 5, 15, 16], [5, 6, 14, 15], [4, 5, 14, 15], [5, 14, 15, 16], [13, 14, 15, 16]]
+      this.randomIndex = Math.floor(Math.random()*this.indexArray.length)
+      this.newBlock = this.indexArray[this.randomIndex]
+      this.arrayBlocks.push(this.newBlock)
+      // console.log(this.arrayBlocks)
+    }
+    generateBlock(){
+      setInterval(() => {
+        if (this.newBlock === null){
+          this.newRandomShape()
+        } else if (this.newBlock.some(number => number > 190)){
+          this.newRandomShape()
+          this.occupied()
+          console.log(this.arrayBlocks)
+        }
+      },1000)
+      this.falling(this.arrayBlocks[this.arrayBlocks.length - 1])
+    }
+    handleKeys(e) {
+      this.movement(e)
+    }
+    windowListener(){
+      window.addEventListener('keydown', this.handleKeys.bind(this))
+    }
+    occupied(){
+      if (this.newBlock.some(number => number > 190)) {
+        for (let i = 0; i < this.arrayBlocks.length; i++){
+          this.arrayBlockIndex = this.arrayBlocks[i]
+          for (let j = 0; j < this.arrayBlockIndex.length; j++){
+            this.occupiedBlock = gridItems[this.arrayBlockIndex[j]]
+            this.occupiedBlockArray.push(this.occupiedBlock)
+          }
+          this.occupiedBlockArray.forEach(color => color.classList.add('occupied'))
+        }
+      }
     }
   }
 
-  class ShapeL extends Shape {
-    constructor(){
-      super()
-      this.shape = [[1,0,0],[1,1,1]]
-      this.index = [4, 14, 15, 16]
-    }
-  }
-  class ShapeLAlternate extends Shape {
-    constructor(){
-      super()
-      this.shape = [[0,0,1],[1,1,1]]
-      this.index = [6, 14, 15, 16]
-    }
-  }
-  class ShapeZ extends Shape {
-    constructor(){
-      super()
-      this.shape = [[1,1,0],[0,1,1]]
-      this.index = [4, 5, 15, 16]
-    }
-  }
-  class ShapeZAlternate extends Shape {
-    constructor(){
-      super()
-      this.shape = [[0,1,1],[1,1,0]]
-      this.index = [5, 6, 14, 15]
-    }
-  }
-  class ShapeO extends Shape {
-    constructor(){
-      super()
-      this.shape = [[1,1],[1,1]]
-      this.index = [4, 5, 14, 15]
-    }
-  }
-  class ShapeT extends Shape {
-    constructor(){
-      super()
-      this.shape = [[0,1,0],[1,1,1]]
-      this.index = [5, 14, 15, 16]
-    }
-  }
-  class ShapeI extends Shape {
-    constructor(){
-      super()
-      this.shape = [1,1,1,1]
-      this.index = [13, 14, 15, 16]
-    }
-  }
-  const shape1 = new ShapeL()
-  const shape2 = new ShapeLAlternate()
-  const shape3 = new ShapeZ()
-  const shape4 = new ShapeZAlternate()
-  const shape5 = new ShapeO()
-  const shape6 = new ShapeT()
-  const shape7 = new ShapeI()
-  let arrayBlocks = []
-
-  function newRandomShape(){
-    const randomArray = [shape1, shape2, shape3, shape4, shape5, shape6, shape7]
-    const randomIndex = Math.floor(Math.random()*randomArray.length)
-    const newBlock = randomArray[randomIndex]
-    arrayBlocks.push(newBlock)
-    return arrayBlocks
-  }
-
-  newRandomShape()
-  console.log(arrayBlocks)
-  arrayBlocks[arrayBlocks.length-1].falling()
+  const block = new Shape()
 
   function clear(){
     gridItems.forEach(divIndex => divIndex.classList.remove('filled'))
   }
 
-  // console.log(arrayBlocks[arrayBlocks.length - 1].newIndex)
-
-  document.addEventListener('keydown', (e) => {
-    arrayBlocks[arrayBlocks.length-1].movement(e)
-  })
 
 })
