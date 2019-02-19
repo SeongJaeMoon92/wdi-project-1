@@ -1,12 +1,13 @@
 window.addEventListener('DOMContentLoaded', () => {
   const pageWrapper = document.querySelector('.page-wrapper')
   const gridItems = pageWrapper.childNodes
-  // console.log(gridItems)
+
+  gameSetup()
+  // console.log(gridItems.classList.contains('occupied'))
   function gameSetup(){
     boardDivs(200)
     // boardArray()
   }
-
   function boardDivs(num) {
     for (let i = 0; i < num; i++){
       const newDivs = document.createElement('div')
@@ -17,7 +18,6 @@ window.addEventListener('DOMContentLoaded', () => {
       pageWrapper.appendChild(newDivs)
     }
   }
-  gameSetup()
 
   class Shape {
     constructor () {
@@ -29,23 +29,37 @@ window.addEventListener('DOMContentLoaded', () => {
       this.randomIndex = null
       this.occupiedBlockArray = []
       this.currentShape = null
+      this.occupiedItem = document.getElementsByClassName('grid')
+      this.testInterval = null
       this.generateBlock()
       this.windowListener()
     }
     falling(){
-      setInterval(()=>{
+      this.testInterval = setInterval(()=>{
         if (!this.newBlock.some(number => number > 190)) {
           clear()
           this.emptyArray = []
           for (let i = 0; i < this.newBlock.length; i++){
+            // console.log(this.occupiedItem[this.newBlock[i]+10].classList.contains('occupied'))
+            // if (this.occupiedItem[this.newIndex+10].classList.contains('occupied') === false){
             this.newBlock[i] += 10
             this.newIndex = this.newBlock[i]
             this.newShape = gridItems[this.newIndex]
             this.emptyArray.push(this.newShape)
+            // } else {
+            //   this.occupied()
+            // }
           }
           this.fill()
           console.log('New Index: ' + this.newIndex)
           this.occupied()
+        }
+        for (let j = 0; j < this.newBlock.length; j++){
+          if(this.occupiedItem[this.newBlock[j]+10].classList.contains('occupied') === true){
+            clearInterval(this.testInterval)
+            // this.generateBlock()
+            this.occupied()
+          }
         }
       },1000)
     }
@@ -56,13 +70,15 @@ window.addEventListener('DOMContentLoaded', () => {
       if (!this.newBlock.some(number => number > 190)) {
         this.emptyArray = []
         for (let k = 0; k < this.newBlock.length; k++){
-          if (e.keyCode === 37){
-            this.newBlock[k]--
-          } else if (e.keyCode === 39) {
-            this.newBlock[k]++
-          } else if(e.keyCode === 40) {
+          if(e.keyCode === 40) {
             this.newBlock[k]+= 10
-          } else {
+          } else if (e.keyCode === 37 && !this.newBlock.some(number => number % 10 === 0)){
+            this.newBlock[k]--
+            console.log(this.newBlock[k])
+          } else if (e.keyCode === 39 && !this.newBlock.some(number => number % 10 === 9)) {
+            this.newBlock[k]++
+            // console.log(this.newBlock[k])
+          } else  {
             return false
           }
           this.newIndex = this.newBlock[k]
@@ -100,7 +116,8 @@ window.addEventListener('DOMContentLoaded', () => {
       window.addEventListener('keydown', this.handleKeys.bind(this))
     }
     occupied(){
-      if (this.newBlock.some(number => number > 190)) {
+      console.log(this.occupiedItem[this.newIndex+10])
+      if (this.newBlock.some(number => number > 190) || this.occupiedItem[this.newIndex+10].classList.contains('occupied') === true) {
         for (let i = 0; i < this.arrayBlocks.length; i++){
           this.arrayBlockIndex = this.arrayBlocks[i]
           for (let j = 0; j < this.arrayBlockIndex.length; j++){
@@ -112,12 +129,8 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     }
   }
-
   const block = new Shape()
-
   function clear(){
     gridItems.forEach(divIndex => divIndex.classList.remove('filled'))
   }
-
-
 })
