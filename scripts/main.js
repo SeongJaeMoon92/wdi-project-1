@@ -27,8 +27,10 @@ window.addEventListener('DOMContentLoaded', () => {
       this.testInterval = null
       this.wall = null
       this.arrowKey = null
+      this.clearBlocks = []
       this.generateBlock()
       this.windowListener()
+      this.checkingRows()
     }
     falling(){
       this.testInterval = setInterval(()=>{
@@ -41,6 +43,7 @@ window.addEventListener('DOMContentLoaded', () => {
           }
           this.fill()
           this.occupied()
+          this.checkingRows()
         }
         for (let j = 0; j < this.newBlock.length; j++){
           if(this.newBlock.some(number => number > 190)||
@@ -48,6 +51,7 @@ window.addEventListener('DOMContentLoaded', () => {
             clearInterval(this.testInterval)
             this.generateBlock()
             this.occupied()
+            this.checkingRows()
           }
         }
       },1000)
@@ -56,13 +60,6 @@ window.addEventListener('DOMContentLoaded', () => {
       this.emptyArray.forEach(shapeIndex => shapeIndex.classList.add('filled'))
     }
     movement(){
-      // if(
-      //   this.newBlock === null ||
-      //   this.newBlock.some(number => number > 190)||
-      //   this.occupiedItem[this.newBlock[3]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[2]+10].classList.contains('occupied') === true ||
-      //   this.occupiedItem[this.newBlock[1]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[0]+10].classList.contains('occupied') === true) {
-      //   return
-      // } else
       if (!this.newBlock.some(number => number > 190)) {
         this.emptyArray = []
         for (let k = 0; k < this.newBlock.length; k++){
@@ -83,6 +80,7 @@ window.addEventListener('DOMContentLoaded', () => {
         this.fill()
       }
       this.occupied()
+      // this.checkingRows()
     }
     movementCondition(e){
       if(
@@ -119,6 +117,7 @@ window.addEventListener('DOMContentLoaded', () => {
       this.randomIndex = Math.floor(Math.random()*this.indexArray.length)
       // console.log(this.randomIndex)
       this.newBlock = this.indexArray[this.randomIndex]
+      // this.newBlock = this.indexArray[4]
       // console.log(this.newBlock)
       this.arrayBlocks.push(this.newBlock)
     }
@@ -143,23 +142,35 @@ window.addEventListener('DOMContentLoaded', () => {
       window.addEventListener('keydown', this.handleKeys.bind(this))
     }
     occupied(){
-      if (this.newBlock.some(number => number > 190) || this.occupiedItem[this.newBlock[3]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[2]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[1]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[0]+10].classList.contains('occupied') === true) {
-        for (let i = 0; i < this.arrayBlocks.length; i++){
-          this.arrayBlockIndex = this.arrayBlocks[i]
-          for (let j = 0; j < this.arrayBlockIndex.length; j++){
-            this.occupiedBlock = gridItems[this.arrayBlockIndex[j]]
-            this.occupiedBlockArray.push(this.occupiedBlock)
-          }
-          this.occupiedBlockArray.forEach(color => color.classList.add('occupied'))
+      if (
+        this.newBlock.some(number => number > 190) ||
+      this.occupiedItem[this.newBlock[3]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[2]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[1]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[0]+10].classList.contains('occupied') === true) {
+        // for (let i = 0; i < this.arrayBlocks.length; i++){
+        this.arrayBlockIndex = this.arrayBlocks[this.arrayBlocks.length-1]
+        for (let j = 0; j < this.arrayBlockIndex.length; j++){
+          this.occupiedBlock = gridItems[this.arrayBlockIndex[j]]
+          this.occupiedBlockArray.push(this.occupiedBlock)
         }
+        this.occupiedBlockArray.forEach(color => color.classList.add('occupied'))
+        // }
+        this.occupiedBlockArray = []
       }
     }
     checkingRows(){
-      for (let i = 0; i < 20; i++){
-        for (let j = 0; j < 10; j++){
-          if()
+      for (let i = 0; i < 200; i+=10){
+        for(let j = 0; j < 10; j++){
+          this.clearBlocks.push(gridItems[i+j])
+          if(this.clearBlocks.length === 10){
+            if(this.clearBlocks.every(item => item.classList.contains('occupied'))){
+              this.clearBlocks.forEach(item => item.classList.remove('occupied'))
+            }
+          }
         }
+        this.clearBlocks = []
       }
+    }
+    rotation(){
+
     }
   }
   function clear(){
