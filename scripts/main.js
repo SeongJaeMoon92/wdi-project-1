@@ -28,6 +28,8 @@ window.addEventListener('DOMContentLoaded', () => {
       this.wall = null
       this.arrowKey = null
       this.clearBlocks = []
+      this.blockRotation = []
+      this.rotationNotation = 0
       this.generateBlock()
       this.windowListener()
       this.checkingRows()
@@ -105,20 +107,20 @@ window.addEventListener('DOMContentLoaded', () => {
             }
           } else if (e.keyCode === 40){
             this.arrowKey = 'down'
+          } else if (e.keyCode === 38){
+            this.arrowKey = 'up'
           } else {
             return
           }
         }
         this.movement(e)
+        this.rotation(e)
       }
     }
     newRandomShape(){
       this.indexArray = [[4, 14, 15, 16], [6, 14, 15, 16], [4, 5, 15, 16], [5, 6, 14, 15], [4, 5, 14, 15], [5, 14, 15, 16], [13, 14, 15, 16]]
       this.randomIndex = Math.floor(Math.random()*this.indexArray.length)
-      // console.log(this.randomIndex)
       this.newBlock = this.indexArray[this.randomIndex]
-      // this.newBlock = this.indexArray[4]
-      // console.log(this.newBlock)
       this.arrayBlocks.push(this.newBlock)
     }
     generateBlock(){
@@ -170,7 +172,68 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     }
     rotation(){
-
+      if(this.arrowKey === 'up') {
+        console.log(this.rotationNotation)
+        if (this.randomIndex === 0){
+          this.blockRotation = [[20, 11, -11],[2,-9,9],[-20,-11,11],[-2,9,-9]]
+          this.newBlock[0] += this.blockRotation[this.rotationNotation][0]
+          this.newBlock[1] += this.blockRotation[this.rotationNotation][1]
+          this.newBlock[3] += this.blockRotation[this.rotationNotation][2]
+          this.rotationNotation++
+          if (this.rotationNotation === 4){
+            this.rotationNotation = 0
+          }
+        } else if (this.randomIndex === 1){
+          this.blockRotation = [[-2, 11, -11],[20,-9,9],[2,-11,11],[-20,9,-9]]
+          this.newBlock[0] += this.blockRotation[this.rotationNotation][0]
+          this.newBlock[1] += this.blockRotation[this.rotationNotation][1]
+          this.newBlock[3] += this.blockRotation[this.rotationNotation][2]
+          this.rotationNotation++
+          if (this.rotationNotation === 4){
+            this.rotationNotation = 0
+          }
+        } else if (this.randomIndex === 2){
+          this.blockRotation = [[20, 9, -11],[2,11,9],[-20,-9,11],[-2,-11,-9]]
+          this.newBlock[0] += this.blockRotation[this.rotationNotation][0]
+          this.newBlock[1] += this.blockRotation[this.rotationNotation][1]
+          this.newBlock[3] += this.blockRotation[this.rotationNotation][2]
+          this.rotationNotation++
+          if (this.rotationNotation === 4){
+            this.rotationNotation = 0
+          }
+        } else if (this.randomIndex === 3){
+          this.blockRotation = [[9, -2, 11],[11,20,-9],[-9,2,-11],[-11,-20,9]]
+          this.newBlock[0] += this.blockRotation[this.rotationNotation][0]
+          this.newBlock[1] += this.blockRotation[this.rotationNotation][1]
+          this.newBlock[2] += this.blockRotation[this.rotationNotation][2]
+          this.rotationNotation++
+          if (this.rotationNotation === 4){
+            this.rotationNotation = 0
+          }
+        } else if (this.randomIndex === 5){
+          this.blockRotation = [[9, 11, -11],[11,-9,9],[-9,-11,11],[-11,9,-9]]
+          this.newBlock[0] += this.blockRotation[this.rotationNotation][0]
+          this.newBlock[1] += this.blockRotation[this.rotationNotation][1]
+          this.newBlock[3] += this.blockRotation[this.rotationNotation][2]
+          this.rotationNotation++
+          if (this.rotationNotation === 4){
+            this.rotationNotation = 0
+          }
+        } else if (this.randomIndex === 6){
+          this.blockRotation = [[9, 18, 27],[-9,-18,-27]]
+          this.newBlock[1] += this.blockRotation[this.rotationNotation][0]
+          this.newBlock[2] += this.blockRotation[this.rotationNotation][1]
+          this.newBlock[3] += this.blockRotation[this.rotationNotation][2]
+          this.rotationNotation++
+          if (this.rotationNotation === 2){
+            this.rotationNotation = 0
+          }
+        }
+      } else if (
+        this.newBlock.some(number => number > 190) ||
+        this.occupiedItem[this.newBlock[3]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[2]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[1]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[0]+10].classList.contains('occupied') === true) {
+        this.rotationNotation = 0
+      }
     }
   }
   function clear(){
@@ -178,3 +241,5 @@ window.addEventListener('DOMContentLoaded', () => {
   }
   const block = new Shape()
 })
+
+//timer delay on blocks changing to occupied. or key up
