@@ -30,6 +30,7 @@ window.addEventListener('DOMContentLoaded', () => {
       this.clearBlocks = []
       this.blockRotation = []
       this.rotationNotation = 0
+      this.numberOfRows = []
       this.generateBlock()
       this.windowListener()
       this.checkingRows()
@@ -79,8 +80,8 @@ window.addEventListener('DOMContentLoaded', () => {
           this.emptyArray.push(gridItems[this.newBlock[k]])
         }
         clear()
-        this.fill()
       }
+      this.fill()
       this.occupied()
       // this.checkingRows()
     }
@@ -94,13 +95,19 @@ window.addEventListener('DOMContentLoaded', () => {
       } else {
         for (let k = 0; k < this.newBlock.length; k++){
           if (e.keyCode === 37){
-            if (this.newBlock[k] % 10 === 0){
+            if (this.newBlock[k] % 10 === 0 ||
+              this.occupiedItem[this.newBlock[3]-1].classList.contains('occupied') === true ||
+              this.occupiedItem[this.newBlock[2]-1].classList.contains('occupied') === true ||
+              this.occupiedItem[this.newBlock[1]-1].classList.contains('occupied') === true ||
+              this.occupiedItem[this.newBlock[0]-1].classList.contains('occupied') === true){
               return false
             } else {
               this.arrowKey = 'left'
             }
           } else if (e.keyCode === 39){
-            if (this.newBlock[k] % 10 === 9) {
+            if (this.newBlock[k] % 10 === 9 ||
+              this.occupiedItem[this.newBlock[3]+1].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[2]+1].classList.contains('occupied') === true ||
+              this.occupiedItem[this.newBlock[1]+1].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[0]+1].classList.contains('occupied') === true ) {
               return false
             } else {
               this.arrowKey = 'right'
@@ -108,7 +115,14 @@ window.addEventListener('DOMContentLoaded', () => {
           } else if (e.keyCode === 40){
             this.arrowKey = 'down'
           } else if (e.keyCode === 38){
-            this.arrowKey = 'up'
+            // if (this.newBlock[k] % 10 === 0 || this.newBlock[k] % 10 === 9){
+            //   return false
+            // } else {
+            if (this.occupiedItem[this.newBlock[3]+10].classList.contains('occupied') === false || this.occupiedItem[this.newBlock[2]+10].classList.contains('occupied') === false ||
+            this.occupiedItem[this.newBlock[1]+10].classList.contains('occupied') === false || this.occupiedItem[this.newBlock[0]+10].classList.contains('occupied') === false){
+              this.arrowKey = 'up'
+            }
+            // }
           } else {
             return
           }
@@ -120,6 +134,7 @@ window.addEventListener('DOMContentLoaded', () => {
     newRandomShape(){
       this.indexArray = [[4, 14, 15, 16], [6, 14, 15, 16], [4, 5, 15, 16], [5, 6, 14, 15], [4, 5, 14, 15], [5, 14, 15, 16], [13, 14, 15, 16]]
       this.randomIndex = Math.floor(Math.random()*this.indexArray.length)
+      // this.randomIndex = 4
       this.newBlock = this.indexArray[this.randomIndex]
       this.arrayBlocks.push(this.newBlock)
     }
@@ -136,6 +151,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
       },1000)
       this.falling(this.arrayBlocks[this.arrayBlocks.length - 1])
+      this.rotationNotation = 0
     }
     handleKeys(e) {
       this.movementCondition(e)
@@ -145,7 +161,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     occupied(){
       if (
-        this.newBlock.some(number => number > 190) ||
+        this.newBlock.some(number => number >= 190) ||
       this.occupiedItem[this.newBlock[3]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[2]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[1]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[0]+10].classList.contains('occupied') === true) {
         // for (let i = 0; i < this.arrayBlocks.length; i++){
         this.arrayBlockIndex = this.arrayBlocks[this.arrayBlocks.length-1]
@@ -165,11 +181,19 @@ window.addEventListener('DOMContentLoaded', () => {
           if(this.clearBlocks.length === 10){
             if(this.clearBlocks.every(item => item.classList.contains('occupied'))){
               this.clearBlocks.forEach(item => item.classList.remove('occupied'))
+              this.numberOfRows.push(i)
+              console.log(this.numberOfRows)
+              // for (let k = i; k > 0 ; k--){
+              //   if(gridItems[k].classList.contains('occupied')){
+              //
+              //   }
+              // }
             }
           }
         }
         this.clearBlocks = []
       }
+      this.numberOfRows = []
     }
     rotation(){
       if(this.arrowKey === 'up') {
@@ -229,12 +253,14 @@ window.addEventListener('DOMContentLoaded', () => {
             this.rotationNotation = 0
           }
         }
-      } else if (
-        this.newBlock.some(number => number > 190) ||
-        this.occupiedItem[this.newBlock[3]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[2]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[1]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[0]+10].classList.contains('occupied') === true) {
-        this.rotationNotation = 0
       }
+      // else if (
+      //   this.newBlock.some(number => number >= 190) ||
+      //   this.occupiedItem[this.newBlock[3]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[2]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[1]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[0]+10].classList.contains('occupied') === true) {
+      //   this.rotationNotation = 0
+      // }
     }
+
   }
   function clear(){
     gridItems.forEach(divIndex => divIndex.classList.remove('filled'))
