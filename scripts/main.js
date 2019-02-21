@@ -22,10 +22,8 @@ window.addEventListener('DOMContentLoaded', () => {
       this.arrayBlocks = []
       this.randomIndex = null
       this.occupiedBlockArray = []
-      this.currentShape = null
       this.occupiedItem = document.getElementsByClassName('grid')
       this.testInterval = null
-      this.wall = null
       this.arrowKey = null
       this.clearBlocks = []
       this.blockRotation = []
@@ -37,7 +35,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     falling(){
       this.testInterval = setInterval(()=>{
-        if (!this.newBlock.some(number => number > 190)) {
+        if (!this.newBlock.some(number => number >= 190)) {
           this.emptyArray = []
           clear()
           for (let i = 0; i < this.newBlock.length; i++){
@@ -63,7 +61,7 @@ window.addEventListener('DOMContentLoaded', () => {
       this.emptyArray.forEach(shapeIndex => shapeIndex.classList.add('filled'))
     }
     movement(){
-      if (!this.newBlock.some(number => number > 190)) {
+      if (!this.newBlock.some(number => number >= 190)) {
         this.emptyArray = []
         for (let k = 0; k < this.newBlock.length; k++){
           switch(this.arrowKey){
@@ -88,7 +86,7 @@ window.addEventListener('DOMContentLoaded', () => {
     movementCondition(e){
       if(
         this.newBlock === null ||
-        this.newBlock.some(number => number > 190)||
+        this.newBlock.some(number => number >= 190)||
         this.occupiedItem[this.newBlock[3]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[2]+10].classList.contains('occupied') === true ||
         this.occupiedItem[this.newBlock[1]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[0]+10].classList.contains('occupied') === true){
         return
@@ -117,13 +115,14 @@ window.addEventListener('DOMContentLoaded', () => {
           } else if (e.keyCode === 38){
             if (this.newBlock[k] % 10 === 0 || this.newBlock[k] % 10 === 9){
               return false
-            } else if (
-              this.occupiedItem[this.newBlock[3]+10].classList.contains('occupied') === false || this.occupiedItem[this.newBlock[2]+10].classList.contains('occupied') === false ||
-              this.occupiedItem[this.newBlock[1]+10].classList.contains('occupied') === false || this.occupiedItem[this.newBlock[0]+10].classList.contains('occupied') === false){
-              this.arrowKey = 'up'
             } else {
-              return
+              this.arrowKey = 'up'
             }
+            // if (
+            //   this.occupiedItem[this.newBlock[3]+10].classList.contains('occupied') === false || this.occupiedItem[this.newBlock[2]+10].classList.contains('occupied') === false ||
+            //   this.occupiedItem[this.newBlock[1]+10].classList.contains('occupied') === false || this.occupiedItem[this.newBlock[0]+10].classList.contains('occupied') === false){
+            // } else {
+            //   return
           }
         }
         this.movement(e)
@@ -146,7 +145,7 @@ window.addEventListener('DOMContentLoaded', () => {
         // } else
         if (
           this.newBlock === null||
-          this.newBlock.some(number => number > 190) ||
+          this.newBlock.some(number => number >= 190) ||
           this.occupiedItem[this.newBlock[3]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[2]+10].classList.contains('occupied') === true ||
           this.occupiedItem[this.newBlock[1]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[0]+10].classList.contains('occupied') === true){
           this.newRandomShape()
@@ -187,7 +186,9 @@ window.addEventListener('DOMContentLoaded', () => {
               console.log(this.numberOfRows)
               for (let k = i; k > 0 ; k--){
                 if(gridItems[k].classList.contains('occupied')){
-                  this.items.push(this)
+                  gridItems[k].classList.remove('occupied')
+                  k+=10
+                  gridItems[k].classList.add('occupied')
                 }
               }
             }
