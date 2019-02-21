@@ -8,10 +8,10 @@ window.addEventListener('DOMContentLoaded', () => {
   function boardDivs(num) {
     for (let i = 0; i < num; i++){
       const newDivs = document.createElement('div')
-      const newText = document.createTextNode(i)
+      // const newText = document.createTextNode(i)
       newDivs.dataset.array = i
       newDivs.setAttribute('class', 'grid')
-      newDivs.appendChild(newText)
+      // newDivs.appendChild(newText)
       pageWrapper.appendChild(newDivs)
     }
   }
@@ -38,10 +38,13 @@ window.addEventListener('DOMContentLoaded', () => {
       this.highestscoreboard = document.querySelector('.highestscoreboard')
       this.body = document.querySelector('body')
       this.gameboard = document.querySelector('.gameboard')
+      this.heading = document.querySelector('.heading')
+      this.headingText = document.querySelector('.headingSpan')
       this.generateBlock()
       this.windowListener()
       this.windowListenerReset()
       this.windowLoad()
+      this.headingClick()
     }
     falling(){
       this.testInterval = setInterval(()=>{
@@ -120,17 +123,14 @@ window.addEventListener('DOMContentLoaded', () => {
           } else if (e.keyCode === 40){
             this.arrowKey = 'down'
           } else if (e.keyCode === 38){
-            if (this.newBlock[k] % 10 === 0 || this.newBlock[k] % 10 === 9 ||
-              this.occupiedItem[this.newBlock[3]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[2]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[1]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[0]+10].classList.contains('occupied') === true){
+            if (this.newBlock[k] % 10 === 0 || this.newBlock[k] % 10 === 9
+            // ||
+              // this.occupiedItem[this.newBlock[3]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[2]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[1]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[0]+10].classList.contains('occupied') === true
+            ){
               return false
             } else {
               this.arrowKey = 'up'
             }
-            // if (
-            //   this.occupiedItem[this.newBlock[3]+10].classList.contains('occupied') === false || this.occupiedItem[this.newBlock[2]+10].classList.contains('occupied') === false ||
-            //   this.occupiedItem[this.newBlock[1]+10].classList.contains('occupied') === false || this.occupiedItem[this.newBlock[0]+10].classList.contains('occupied') === false){
-            // } else {
-            //   return
           }
         }
         this.movement(e)
@@ -271,16 +271,23 @@ window.addEventListener('DOMContentLoaded', () => {
           clearInterval(this.generate)
           clearInterval(this.testInterval)
           console.log('You lose')
-          this.wrap.style.display ='none'
           this.playagainBtn.style.display ='block'
-          this.wrap.style.width = '50%'
-          this.scoreboard.style.width = '50%'
+          pageWrapper.style.display ='none'
           this.highestScore()
         }
       }
     }
     playagain(){
-      location.reload()
+      // location.reload()
+      for (let i = 0; i < 200; i++){
+        gridItems[i].classList.remove('occupied')
+      }
+      this.score = 0
+      this.scoreText.innerHTML = 0
+      pageWrapper.style.display ='flex'
+      this.playagainBtn.style.display = 'none'
+      this.rotationNotation = 0
+      this.generateBlock()
     }
     windowListenerReset(){
       this.playagainBtn.addEventListener('click', this.playagain.bind(this))
@@ -298,7 +305,18 @@ window.addEventListener('DOMContentLoaded', () => {
     windowLoad(){
       window.addEventListener('load', ()=>{
         this.highestscoreboard.innerHTML = localStorage.getItem('highestScore')
+        this.gameboard.style.display = 'none'
+        this.heading.style.height = '100%'
+        this.headingText.style.lineHeight = '600px'
+      })
+    }
+    headingClick(){
+      this.heading.addEventListener('click',()=>{
+        this.gameboard.style.display = 'flex'
         this.gameboard.classList.add('animated', 'bounceInUp')
+        this.heading.classList.add('animated', 'bounceInUp')
+        this.heading.style.height = '15%'
+        this.headingText.style.lineHeight = '0px'
       })
     }
   }

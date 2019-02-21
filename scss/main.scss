@@ -20,6 +20,10 @@ body {
     background: linear-gradient(to right, #e73827 0%, #ffa200 20%, #f5d60c 40%, #71f05d 60%, #345bf7 80%, #a936f5 100% );
   	-webkit-background-clip: text;
   	-webkit-text-fill-color: transparent;
+    }
+    div.heading:hover{
+      transition: transform .8s ease-in-out;
+      transform: rotate(-3deg) scale(1.03);
   }
   div.gameboard{
     display: flex;
@@ -31,14 +35,13 @@ body {
       font-size: 60px;
       text-transform: uppercase;
       color: white;
-      width: 35%;
-      // margin-right: 60px;
+      width: 37.5%;
       font-family: 'Press Start 2P', cursive;
     }
     div.scoreboard{
       display: flex;
       flex-wrap: wrap;
-      width: 35%;
+      width: 37.5%;
       margin-top: 10px;
       div.score{
         font-size: 60px;
@@ -48,18 +51,28 @@ body {
         height: 30%;
         font-family: 'Press Start 2P', cursive;
       }
-      div.play-again{
-        display: none;
-        margin-left: 60px;
-        height: 40%;
-        font-family: 'Press Start 2P', cursive;
-        font-size: 60px;
-        text-transform: uppercase;
-        color: purple;
-      }
+      // div.play-again{
+      //   display: none;
+      //   margin-left: 60px;
+      //   height: 40%;
+      //   font-family: 'Press Start 2P', cursive;
+      //   font-size: 60px;
+      //   text-transform: uppercase;
+      //   color: purple;
+      // }
     }
     div.wrap{
       width: 25%;
+      div.play-again{
+        width: 100%;
+        height: 100%;
+        font-family: 'Press Start 2P', cursive;
+        font-size: 60px;
+        text-transform: uppercase;
+        padding-top: 200px;
+        color: purple;
+        display: none;
+      }
       div.page-wrapper {
         border: 1px solid black;
         width: 100%;
@@ -68,12 +81,14 @@ body {
         flex-wrap: wrap;
         margin: 10px;
         box-shadow: 2px 3px 50px 20px rgba(255,255,255,0.8);
+        // display: none;
         div {
           &.grid {
             width: 10%;
             height: 5%;
             border: 1px dotted lighten(white, 30%);
             font-size: 10px;
+            color: black;
           }
         }
       }
