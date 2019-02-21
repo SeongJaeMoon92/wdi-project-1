@@ -29,9 +29,20 @@ window.addEventListener('DOMContentLoaded', () => {
       this.blockRotation = []
       this.rotationNotation = 0
       this.numberOfRows = []
+      this.generate
+      this.scoreText = document.querySelector('.scorespan')
+      this.score = 0
+      this.playagainBtn = document.querySelector('.play-again')
+      this.gameboard = document.querySelector('.wrap')
+      this.scoreboard = document.querySelector('.scoreboard')
+      this.highestscoreboard = document.querySelector('.highestscoreboard')
+      this.highestscore
       this.generateBlock()
       this.windowListener()
-      this.checkingRows()
+      this.windowListenerReset()
+      this.highestScore()
+      // this.checkingRows()
+      // this.losingCondition()
     }
     falling(){
       this.testInterval = setInterval(()=>{
@@ -113,7 +124,8 @@ window.addEventListener('DOMContentLoaded', () => {
           } else if (e.keyCode === 40){
             this.arrowKey = 'down'
           } else if (e.keyCode === 38){
-            if (this.newBlock[k] % 10 === 0 || this.newBlock[k] % 10 === 9){
+            if (this.newBlock[k] % 10 === 0 || this.newBlock[k] % 10 === 9 ||
+              this.occupiedItem[this.newBlock[3]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[2]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[1]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[0]+10].classList.contains('occupied') === true){
               return false
             } else {
               this.arrowKey = 'up'
@@ -137,7 +149,7 @@ window.addEventListener('DOMContentLoaded', () => {
       this.arrayBlocks.push(this.newBlock)
     }
     generateBlock(){
-      setInterval(() => {
+      this.generate = setInterval(() => {
         // if (){
         //   this.newRandomShape()
         // } else if (){
@@ -153,6 +165,7 @@ window.addEventListener('DOMContentLoaded', () => {
       },1000)
       this.falling(this.arrayBlocks[this.arrayBlocks.length - 1])
       this.rotationNotation = 0
+      this.losingCondition()
     }
     handleKeys(e) {
       this.movementCondition(e)
@@ -189,6 +202,8 @@ window.addEventListener('DOMContentLoaded', () => {
                   gridItems[k].classList.remove('occupied')
                   k+=10
                   gridItems[k].classList.add('occupied')
+                  this.score+=10
+                  this.scoreText.innerHTML = this.score
                 }
               }
             }
@@ -199,7 +214,7 @@ window.addEventListener('DOMContentLoaded', () => {
       this.numberOfRows = []
     }
     rotation(){
-      if(this.arrowKey === 'up') {
+      if(this.arrowKey === 'up' ) {
         console.log(this.rotationNotation)
         if (this.randomIndex === 0){
           this.blockRotation = [[20, 11, -11],[2,-9,9],[-20,-11,11],[-2,9,-9]]
@@ -260,9 +275,43 @@ window.addEventListener('DOMContentLoaded', () => {
         this.newBlock.some(number => number >= 190) ||
         this.occupiedItem[this.newBlock[3]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[2]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[1]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[0]+10].classList.contains('occupied') === true) {
         this.rotationNotation = 0
+        return
       }
     }
-
+    losingCondition(){
+      for (let i = 10; i < 20; i++){
+        if(gridItems[i].classList.contains('occupied')){
+          clearInterval(this.generate)
+          clearInterval(this.testInterval)
+          console.log('You lose')
+          this.gameboard.style.display ='none'
+          this.playagainBtn.style.display ='block'
+          this.gameboard.style.width = '50%'
+          this.scoreboard.style.width = '50%'
+          // this.highestScore()
+        }
+      }
+    }
+    playagain(){
+      location.reload()
+      // for(let i = 0; i < 200; i++){
+      //   gridItems[i].classList.remove('occupied')
+      // }
+      // this.score = 0
+      // this.scoreText.innerHTML = 0
+    }
+    windowListenerReset(){
+      this.playagainBtn.addEventListener('click', this.playagain.bind(this))
+    }
+    highestScore(){
+      this.highestscore = localStorage.getItem('highestScore')
+      if (this.highestscore < this.score){
+        localStorage.setItem('highestScore', this.score)
+        this.highestscoreboard.innerHTML = this.score
+      } else {
+        this.highestscoreboard.innerHTML = this.highestscore
+      }
+    }
   }
   function clear(){
     gridItems.forEach(divIndex => divIndex.classList.remove('filled'))
