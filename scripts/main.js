@@ -32,12 +32,10 @@ window.addEventListener('DOMContentLoaded', () => {
       this.generate
       this.scoreText = document.querySelector('.scorespan')
       this.score = 0
-
       this.playagainBtn = document.querySelector('.play-again')
       this.scoreboard = document.querySelector('.scoreboard')
       this.wrap = document.querySelector('.wrap')
       this.highestscoreboard = document.querySelector('.highestscoreboard')
-      // this.highestscoreboard = this.highestscore
       this.body = document.querySelector('body')
       this.gameboard = document.querySelector('.gameboard')
       this.generateBlock()
@@ -55,7 +53,6 @@ window.addEventListener('DOMContentLoaded', () => {
             this.emptyArray.push(gridItems[this.newBlock[i]])
           }
           this.fill()
-          // this.occupied()
           this.checkingRows()
         }
         for (let j = 0; j < this.newBlock.length; j++){
@@ -64,7 +61,6 @@ window.addEventListener('DOMContentLoaded', () => {
             clearInterval(this.testInterval)
             this.generateBlock()
             this.occupied()
-            // this.checkingRows()
           }
         }
       },1000)
@@ -93,7 +89,6 @@ window.addEventListener('DOMContentLoaded', () => {
       }
       this.fill()
       this.occupied()
-      // this.checkingRows()
     }
     movementCondition(e){
       if(
@@ -145,17 +140,11 @@ window.addEventListener('DOMContentLoaded', () => {
     newRandomShape(){
       this.indexArray = [[4, 14, 15, 16], [6, 14, 15, 16], [4, 5, 15, 16], [5, 6, 14, 15], [4, 5, 14, 15], [5, 14, 15, 16], [13, 14, 15, 16]]
       this.randomIndex = Math.floor(Math.random()*this.indexArray.length)
-      // this.randomIndex = 4
       this.newBlock = this.indexArray[this.randomIndex]
       this.arrayBlocks.push(this.newBlock)
     }
     generateBlock(){
       this.generate = setInterval(() => {
-        // if (){
-        //   this.newRandomShape()
-        // } else if (){
-        //   this.newRandomShape()
-        // } else
         if (
           this.newBlock === null||
           this.newBlock.some(number => number >= 190) ||
@@ -178,14 +167,12 @@ window.addEventListener('DOMContentLoaded', () => {
       if (
         this.newBlock.some(number => number >= 190) ||
       this.occupiedItem[this.newBlock[3]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[2]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[1]+10].classList.contains('occupied') === true || this.occupiedItem[this.newBlock[0]+10].classList.contains('occupied') === true) {
-        // for (let i = 0; i < this.arrayBlocks.length; i++){
         this.arrayBlockIndex = this.arrayBlocks[this.arrayBlocks.length-1]
         for (let j = 0; j < this.arrayBlockIndex.length; j++){
           this.occupiedBlock = gridItems[this.arrayBlockIndex[j]]
           this.occupiedBlockArray.push(this.occupiedBlock)
         }
         this.occupiedBlockArray.forEach(color => color.classList.add('occupied'))
-        // }
         this.occupiedBlockArray = []
       }
     }
@@ -216,7 +203,6 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     rotation(){
       if(this.arrowKey === 'up') {
-        // console.log(this.rotationNotation)
         if (this.randomIndex === 0){
           this.blockRotation = [[20, 11, -11],[2,-9,9],[-20,-11,11],[-2,9,-9]]
           this.newBlock[0] += this.blockRotation[this.rotationNotation][0]
@@ -295,13 +281,6 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     playagain(){
       location.reload()
-      // for(let i = 0; i < 200; i++){
-      //   gridItems[i].classList.remove('occupied')
-      // }
-      // this.score = 0
-      // this.scoreText.innerHTML = 0
-      // this.wrap.style.display = 'flex'
-      // this.generateBlock()
     }
     windowListenerReset(){
       this.playagainBtn.addEventListener('click', this.playagain.bind(this))
@@ -309,7 +288,7 @@ window.addEventListener('DOMContentLoaded', () => {
     highestScore(){
       const highestscore = localStorage.getItem('highestScore')
       console.log(this)
-      if (this.highestscore < this.score){
+      if (highestscore < this.score){
         localStorage.setItem('highestScore', this.score)
         this.highestscoreboard.innerHTML = this.score
       } else {
@@ -326,14 +305,5 @@ window.addEventListener('DOMContentLoaded', () => {
   function clear(){
     gridItems.forEach(divIndex => divIndex.classList.remove('filled'))
   }
-
-  // const gameboard = document.querySelector('.heading')
-  //
-  // window.addEventListener('load', ()=>{
-  //   gameboard.classList.add('animated','bounce')
-  // })
-
   const block = new Shape()
 })
-
-//timer delay on blocks changing to occupied. or key up
