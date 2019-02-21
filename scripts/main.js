@@ -32,17 +32,18 @@ window.addEventListener('DOMContentLoaded', () => {
       this.generate
       this.scoreText = document.querySelector('.scorespan')
       this.score = 0
+
       this.playagainBtn = document.querySelector('.play-again')
-      this.gameboard = document.querySelector('.wrap')
       this.scoreboard = document.querySelector('.scoreboard')
+      this.wrap = document.querySelector('.wrap')
       this.highestscoreboard = document.querySelector('.highestscoreboard')
-      this.highestscore
+      // this.highestscoreboard = this.highestscore
+      this.body = document.querySelector('body')
+      this.gameboard = document.querySelector('.gameboard')
       this.generateBlock()
       this.windowListener()
       this.windowListenerReset()
-      this.highestScore()
-      // this.checkingRows()
-      // this.losingCondition()
+      this.windowLoad()
     }
     falling(){
       this.testInterval = setInterval(()=>{
@@ -214,8 +215,8 @@ window.addEventListener('DOMContentLoaded', () => {
       this.numberOfRows = []
     }
     rotation(){
-      if(this.arrowKey === 'up' ) {
-        console.log(this.rotationNotation)
+      if(this.arrowKey === 'up') {
+        // console.log(this.rotationNotation)
         if (this.randomIndex === 0){
           this.blockRotation = [[20, 11, -11],[2,-9,9],[-20,-11,11],[-2,9,-9]]
           this.newBlock[0] += this.blockRotation[this.rotationNotation][0]
@@ -284,11 +285,11 @@ window.addEventListener('DOMContentLoaded', () => {
           clearInterval(this.generate)
           clearInterval(this.testInterval)
           console.log('You lose')
-          this.gameboard.style.display ='none'
+          this.wrap.style.display ='none'
           this.playagainBtn.style.display ='block'
-          this.gameboard.style.width = '50%'
+          this.wrap.style.width = '50%'
           this.scoreboard.style.width = '50%'
-          // this.highestScore()
+          this.highestScore()
         }
       }
     }
@@ -299,23 +300,39 @@ window.addEventListener('DOMContentLoaded', () => {
       // }
       // this.score = 0
       // this.scoreText.innerHTML = 0
+      // this.wrap.style.display = 'flex'
+      // this.generateBlock()
     }
     windowListenerReset(){
       this.playagainBtn.addEventListener('click', this.playagain.bind(this))
     }
     highestScore(){
-      this.highestscore = localStorage.getItem('highestScore')
+      const highestscore = localStorage.getItem('highestScore')
+      console.log(this)
       if (this.highestscore < this.score){
         localStorage.setItem('highestScore', this.score)
         this.highestscoreboard.innerHTML = this.score
       } else {
-        this.highestscoreboard.innerHTML = this.highestscore
+        this.highestscoreboard.innerHTML = highestscore
       }
+    }
+    windowLoad(){
+      window.addEventListener('load', ()=>{
+        this.highestscoreboard.innerHTML = localStorage.getItem('highestScore')
+        this.gameboard.classList.add('animated', 'bounceInUp')
+      })
     }
   }
   function clear(){
     gridItems.forEach(divIndex => divIndex.classList.remove('filled'))
   }
+
+  // const gameboard = document.querySelector('.heading')
+  //
+  // window.addEventListener('load', ()=>{
+  //   gameboard.classList.add('animated','bounce')
+  // })
+
   const block = new Shape()
 })
 
