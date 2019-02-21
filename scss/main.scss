@@ -6,12 +6,23 @@ body {
   height: 95vh;
   width: 95vw;
   display: flex;
+  flex-wrap:wrap;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  div.heading{
+    background: url('../image/tetris.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 20%;
+    width: 50%;
+    margin-bottom: 10px;
+  }
   div.page-wrapper {
     border: 1px solid black;
-    width: 30%;
-    height: 85%;
+    width: 25%;
+    height: 75%;
     display: flex;
     flex-wrap: wrap;
     div {
@@ -21,8 +32,6 @@ body {
         border: 1px solid orange;
         font-size: 10px;
       }
-
-
     }
   }
 }
