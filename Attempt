@@ -1,0 +1,30 @@
+const pageWrapper = document.getElementsByClassName('page-wrapper')[0]
+pageWrapper.innerHTML = ''
+
+function arrayCreation(){
+  const x = []
+  for(let i = 0; i < 200; i++) {
+    x.push([])
+    // for(let j = 0; j < 10; j++) {
+    //   x[i].push(0)
+    // }
+  }
+  console.log(x)
+}
+
+function divCreation() {
+  let rowDivs
+  for (let i = 0; i < row; i++){
+    rowDivs = document.createElement('div')
+    rowDivs.dataset.y = i
+    rowDivs.setAttribute('class', 'row')
+    for (let j = 0; j < column; j++){
+      const columnDivs = document.createElement('div')
+      columnDivs.dataset.x = j
+      columnDivs.setAttribute('class', 'column')
+      rowDivs.appendChild(columnDivs)
+    }
+    pageWrapper.appendChild(rowDivs)
+  }
+  console.log(pageWrapper)
+}
